@@ -75,7 +75,7 @@
       background-color: #25d366; /* WhatsApp-style button color */
       color: #fff; /* Text color */
       border: none;
-      border-radius: 5px;
+      border-radius: 22px;
       padding: 8px 16px;
       cursor: pointer;
     }
