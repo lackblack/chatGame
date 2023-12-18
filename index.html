@@ -53,7 +53,6 @@
       margin-bottom: 20px; /* Added space below the quote */
     }
     .conversation-bubble {
-      background-color: #dcf8c6; /* Updated background color */
       border-radius: 10px; /* Updated border radius */
       padding: 10px; /* Updated padding */
       margin: 5px 0;
@@ -63,10 +62,14 @@
     .correct-answer {
       color: green;
       font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
     }
     .wrong-answer {
       color: red;
       font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
     }
     .options-btn {
       margin-right: 10px;
@@ -99,15 +102,15 @@
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Guess Who Said It?v17</div>
+    <div class="chat-header">Guess Who Said It?v18</div>
     <div class="chat-body" id="conversation"></div>
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
       <div id="options"></div>
     </div>
+    <p id="score">Score: <span id="scoreValue">0</span></p>
     <button id="nextBtn" onclick="nextQuote()">Next</button>
     <button id="newGameBtn" onclick="startNewGame()">New Game</button>
-    <p id="score">Score: <span id="scoreValue">0</span></p>
   </div>
 
   <script>
@@ -191,8 +194,17 @@
       for (let i = startIndex; i <= endIndex; i++) {
         const message = chatHistory[i];
         const messageElement = document.createElement('div');
-        const senderContent = `<strong>${message.sender}: ${message.message}</strong>`;
-        messageElement.innerHTML = `<div class="conversation-bubble">${i === quoteIndex ? senderContent : message.sender ? senderContent : message.message}</div>`;
+        const isQuoteMessage = i === quoteIndex;
+
+        if (isQuoteMessage) {
+          messageElement.innerHTML = `<div class="quote-bubble">${message.sender}: ${message.message}</div>`;
+          messageElement.classList.add('user-message');
+        } else {
+          messageElement.innerHTML = `${message.sender}: ${message.message}`;
+          messageElement.classList.add('conversation-bubble');
+          messageElement.classList.add(i % 2 === 0 ? 'user-message' : 'other-user-message'); // Align left and right
+        }
+
         conversationContainer.appendChild(messageElement);
       }
     }
@@ -208,13 +220,13 @@
         score++;
         scoreValue.textContent = score;
         displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += `<div class="conversation-bubble correct-answer">Correct! You guessed it right!</div>`;
+        conversationContainer.innerHTML += `<div class="correct-answer">Correct! You guessed it right!</div>`;
         nextBtn.style.display = 'block';
       } else {
         score = 0;
         scoreValue.textContent = score;
         displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += `<div class="conversation-bubble wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</div>`;
+        conversationContainer.innerHTML += `<div class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</div>`;
         newGameBtn.style.display = 'block';
       }
     }
