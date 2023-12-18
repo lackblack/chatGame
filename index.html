@@ -70,16 +70,16 @@
       margin-top: 40px; /* Added more margin */
     }
     .options-btn {
-  margin-right: 10px;
-  margin-bottom: 10px;
-  background-color: #25d366; /* WhatsApp-style button color */
-  color: #fff; /* Text color */
-  border: none;
-  border-radius: 22px;
-  padding: 8px 16px;
-  cursor: pointer;
-  display: inline-block; /* Ensure buttons appear in line */
-}
+      margin-right: 10px;
+      margin-bottom: 10px;
+      background-color: #25d366; /* WhatsApp-style button color */
+      color: #fff; /* Text color */
+      border: none;
+      border-radius: 22px;
+      padding: 8px 16px;
+      cursor: pointer;
+      display: inline-block; /* Ensure buttons appear in line */
+    }
     #score {
       margin-top: 20px;
       text-align: center; /* Center alignment for score */
@@ -102,7 +102,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="chat-window">
     <div class="chat-header">Kuka sanoi?</div>
@@ -112,7 +111,7 @@
       <div id="options"></div>
     </div>
     <div class="separator"></div> <!-- Separator line -->
-     <div id="correctMessage" class="correct-answer" style="display: none;">Correct! You guessed it right!</div>
+    <div id="correctMessage" class="correct-answer" style="display: none;">Correct! You guessed it right!</div>
     <div id="wrongMessage" class="wrong-answer" style="display: none;">Oops! The correct answer was Immu Salama. Game over!</div>
     <button id="nextBtn" onclick="nextQuote()">Next</button>
     <button id="newGameBtn" onclick="startNewGame()">New Game</button>
@@ -123,7 +122,6 @@
     let score = 0;
     let parsedChatHistory = [];
 
-    // Function to fetch chat history from a text file
     async function fetchChatHistory() {
       try {
         const response = await fetch('chat_history.txt'); // Replace 'chat_history.txt' with your file path
@@ -135,7 +133,6 @@
       }
     }
 
-    // Function to parse the chat data
     function parseChatData(chatText) {
       const messages = chatText.split('\n');
       const parsedMessages = [];
@@ -153,136 +150,45 @@
       return parsedMessages;
     }
 
-    // Function to display the quote and options
-function displayQuoteAndOptions(chatHistory) {
-  const quoteContainer = document.getElementById('quote');
-  const optionsContainer = document.getElementById('options');
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-
-  // Get a random quote from the chat history
-  const randomIndex = Math.floor(Math.random() * chatHistory.length);
-  const randomQuote = chatHistory[randomIndex];
-
-  // Display the quote
-  quoteContainer.innerHTML = `<strong>${randomQuote.message}</strong>`;
-
-  // Create an array of friend names
-  const friends = chatHistory.map(chat => chat.sender);
-  // Remove duplicates from the array
-  const uniqueFriends = [...new Set(friends)];
-
-  // Shuffle friend names for options
-  const shuffledFriends = uniqueFriends.sort(() => Math.random() - 0.5);
-
-  // Display options as buttons
-  optionsContainer.innerHTML = '';
-  shuffledFriends.forEach(friend => {
-    const optionButton = document.createElement('button');
-    optionButton.textContent = friend;
-    optionButton.classList.add('options-btn'); // Add the class for WhatsApp-style appearance
-    optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
-    optionsContainer.appendChild(optionButton);
-  });
-
-  nextBtn.style.display = 'none';
-  newGameBtn.style.display = 'none';
-}
+    function displayQuoteAndOptions(chatHistory) {
+      const quoteContainer = document.getElementById('quote');
+      const optionsContainer = document.getElementById('options');
       const nextBtn = document.getElementById('nextBtn');
       const newGameBtn = document.getElementById('newGameBtn');
 
-      // Get a random quote from the chat history
       const randomIndex = Math.floor(Math.random() * chatHistory.length);
       const randomQuote = chatHistory[randomIndex];
 
-      // Display the quote
       quoteContainer.innerHTML = `<strong>${randomQuote.message}</strong>`;
 
-      // Create an array of friend names
       const friends = chatHistory.map(chat => chat.sender);
-      // Remove duplicates from the array
       const uniqueFriends = [...new Set(friends)];
-
-      // Shuffle friend names for options
       const shuffledFriends = uniqueFriends.sort(() => Math.random() - 0.5);
 
-      // Display options as buttons
-optionsContainer.innerHTML = '';
-shuffledFriends.forEach(friend => {
-  const optionButton = document.createElement('button');
-  optionButton.textContent = friend;
-  optionButton.classList.add('options-btn'); // Add the class for WhatsApp-style appearance
-  optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
-  optionsContainer.appendChild(optionButton);
-});
-
+      optionsContainer.innerHTML = '';
+      shuffledFriends.forEach(friend => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = friend;
+        optionButton.classList.add('options-btn');
+        optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
+        optionsContainer.appendChild(optionButton);
+      });
 
       nextBtn.style.display = 'none';
       newGameBtn.style.display = 'none';
     }
 
-   // ... (Previous code remains unchanged)
-
-// Function to display the conversation around the selected quote
-function displayConversationAroundQuote(chatHistory, quoteIndex) {
-  const conversationContainer = document.getElementById('conversation');
-  conversationContainer.innerHTML = '';
-
-  const messagesToShow = 3;
-  const startIndex = Math.max(0, quoteIndex - messagesToShow);
-  const endIndex = Math.min(chatHistory.length - 1, quoteIndex + messagesToShow);
-
-  for (let i = startIndex; i <= endIndex; i++) {
-    const message = chatHistory[i];
-    const messageElement = document.createElement('p');
-    if (i === quoteIndex) {
-      messageElement.innerHTML = `<strong>${message.sender}: ${message.message}</strong>`;
-    } else {
-      messageElement.innerHTML = `${message.sender}: ${message.message}`;
-    }
-    conversationContainer.appendChild(messageElement);
-  }
-}
-
-// Function to check the answer
-  function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
-  const scoreValue = document.getElementById('scoreValue');
-  const conversationContainer = document.getElementById('conversation');
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-  const optionsContainer = document.getElementById('options');
-
-  // Remove event listeners from option buttons
-  const optionButtons = optionsContainer.querySelectorAll('.options-btn');
-  optionButtons.forEach(button => {
-    button.removeEventListener('click', checkAnswer);
-  });
-
-    if (selectedFriend === correctFriend) {
-      score++;
-      scoreValue.textContent = score;
-      displayConversationAroundQuote(chatHistory, quoteIndex);
-      conversationContainer.innerHTML += `<p class="correct-answer">Correct! You guessed it right!</p>`;
-      nextBtn.style.display = 'block';
-    } else {
-      score = 0;
-      scoreValue.textContent = score;
-      displayConversationAroundQuote(chatHistory, quoteIndex);
-      conversationContainer.innerHTML = `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
-      newGameBtn.style.display = 'block';
-    }
-    optionsContainer.style.display = 'none'; // Hide the options container
-  }
-
-// ... (Remaining code remains unchanged)
-
-
-    // Function to check the answer
     function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
       const scoreValue = document.getElementById('scoreValue');
       const conversationContainer = document.getElementById('conversation');
       const nextBtn = document.getElementById('nextBtn');
       const newGameBtn = document.getElementById('newGameBtn');
+      const optionsContainer = document.getElementById('options');
+
+      const optionButtons = optionsContainer.querySelectorAll('.options-btn');
+      optionButtons.forEach(button => {
+        button.removeEventListener('click', checkAnswer);
+      });
 
       if (selectedFriend === correctFriend) {
         score++;
@@ -294,44 +200,37 @@ function displayConversationAroundQuote(chatHistory, quoteIndex) {
         score = 0;
         scoreValue.textContent = score;
         displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
+        conversationContainer.innerHTML = `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
         newGameBtn.style.display = 'block';
       }
+      optionsContainer.style.display = 'none';
     }
 
-    // ... (Previous code remains unchanged)
+    function nextQuote() {
+      const nextBtn = document.getElementById('nextBtn');
+      const newGameBtn = document.getElementById('newGameBtn');
+      const conversationContainer = document.getElementById('conversation');
 
-// Function to start a new quote game
-function nextQuote() {
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-  const conversationContainer = document.getElementById('conversation');
+      nextBtn.style.display = 'none';
+      newGameBtn.style.display = 'none';
+      conversationContainer.innerHTML = '';
+      displayQuoteAndOptions(parsedChatHistory);
+    }
 
-  nextBtn.style.display = 'none';
-  newGameBtn.style.display = 'none';
-  conversationContainer.innerHTML = ''; // Clear conversation container
-  displayQuoteAndOptions(parsedChatHistory);
-}
+    function startNewGame() {
+      const scoreValue = document.getElementById('scoreValue');
+      const conversationContainer = document.getElementById('conversation');
+      const nextBtn = document.getElementById('nextBtn');
+      const newGameBtn = document.getElementById('newGameBtn');
 
-// Function to start a new game
-function startNewGame() {
-  const scoreValue = document.getElementById('scoreValue');
-  const conversationContainer = document.getElementById('conversation');
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
+      score = 0;
+      scoreValue.textContent = score;
+      nextBtn.style.display = 'none';
+      newGameBtn.style.display = 'none';
+      conversationContainer.innerHTML = '';
+      startGame();
+    }
 
-  score = 0;
-  scoreValue.textContent = score;
-  nextBtn.style.display = 'none';
-  newGameBtn.style.display = 'none';
-  conversationContainer.innerHTML = ''; // Clear conversation container
-  startGame();
-}
-
-// ... (Remaining code remains unchanged)
-
-
-    // Function to load chat history and parse when the page loads
     async function startGame() {
       const chatText = await fetchChatHistory();
       if (chatText) {
