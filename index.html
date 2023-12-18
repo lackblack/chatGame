@@ -156,7 +156,19 @@
     // Function to display the quote and options
     function displayQuoteAndOptions(chatHistory) {
       const quoteContainer = document.getElementById('quote');
-      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+  shuffledFriends.forEach(friend => {
+    const optionButton = document.createElement('button');
+    optionButton.textContent = friend;
+    optionButton.classList.add('options-btn'); // Add the class for WhatsApp-style appearance
+    const clickHandler = () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex);
+    optionButton.addEventListener('click', clickHandler);
+    optionsContainer.appendChild(optionButton);
+  });
+
+  nextBtn.style.display = 'none';
+  newGameBtn.style.display = 'none';
+}
       const nextBtn = document.getElementById('nextBtn');
       const newGameBtn = document.getElementById('newGameBtn');
 
@@ -215,11 +227,17 @@ function displayConversationAroundQuote(chatHistory, quoteIndex) {
 
 // Function to check the answer
   function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
-    const scoreValue = document.getElementById('scoreValue');
-    const conversationContainer = document.getElementById('conversation');
-    const nextBtn = document.getElementById('nextBtn');
-    const newGameBtn = document.getElementById('newGameBtn');
-    const optionsContainer = document.getElementById('options');
+  const scoreValue = document.getElementById('scoreValue');
+  const conversationContainer = document.getElementById('conversation');
+  const nextBtn = document.getElementById('nextBtn');
+  const newGameBtn = document.getElementById('newGameBtn');
+  const optionsContainer = document.getElementById('options');
+
+  // Remove event listeners from option buttons
+  const optionButtons = optionsContainer.querySelectorAll('.options-btn');
+  optionButtons.forEach(button => {
+    button.removeEventListener('click', checkAnswer);
+  });
 
     if (selectedFriend === correctFriend) {
       score++;
