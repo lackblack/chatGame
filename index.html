@@ -5,11 +5,19 @@
   <title>Chat History Game</title>
   <style>
     /* Your CSS styles can go here */
+    .correct-answer {
+      color: green;
+      font-weight: bold;
+    }
+    .wrong-answer {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 
 <body>
-  <h1>Guess Who Said It?v5</h1>
+  <h1>Guess Who Said It?v6</h1>
   <div id="quote-container">
     <p id="quote"></p>
     <div id="options"></div>
@@ -121,12 +129,12 @@
         score++;
         scoreValue.textContent = score;
         displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += '<p>Correct! You guessed it right!</p>';
+        conversationContainer.innerHTML += `<p class="correct-answer">Correct! You guessed it right!</p>`;
         nextBtn.style.display = 'block';
       } else {
         score = 0;
         scoreValue.textContent = score;
-        conversationContainer.innerHTML += `<p>Oops! The correct answer was ${correctFriend}. Game over!</p>`;
+        conversationContainer.innerHTML += `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
         newGameBtn.style.display = 'block';
       }
     }
