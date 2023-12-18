@@ -103,6 +103,22 @@
       border-bottom: 1px solid #ccc; /* Separator line style */
       margin: 20px 0;
     }
+    .guess-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .guess-buttons button {
+      background-color: #25d366;
+      color: #fff;
+      border: 1px solid #25d366;
+      border-radius: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      width: 45%;
+      max-width: 150px;
+    }
   </style>
 </head>
 
@@ -117,6 +133,11 @@
     <div class="separator"></div> <!-- Separator line -->
     <div id="correctMessage" class="correct-answer" style="display: none;">Correct! You guessed it right!</div>
     <div id="wrongMessage" class="wrong-answer" style="display: none;">Oops! The correct answer was Immu Salama. Game over!</div>
+    <div class="guess-buttons">
+      <button id="joonasBtn" class="options-btn" onclick="checkAnswer('Joonas')">Joonas</button>
+      <button id="immuSalamaBtn" class="options-btn" onclick="checkAnswer('Immu Salama')">Immu Salama</button>
+    </div>
+    <div class="separator"></div> <!-- Additional separator line -->
     <button id="nextBtn" onclick="nextQuote()">Next</button>
     <button id="newGameBtn" onclick="startNewGame()">New Game</button>
     <p id="score">Score: <span id="scoreValue">0</span></p>
