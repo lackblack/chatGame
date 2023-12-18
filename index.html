@@ -219,6 +219,9 @@ function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
   const conversationContainer = document.getElementById('conversation');
   const nextBtn = document.getElementById('nextBtn');
   const newGameBtn = document.getElementById('newGameBtn');
+  const optionsContainer = document.getElementById('options');
+
+  optionsContainer.innerHTML = ''; // Clear the options when answer is checked
 
   if (selectedFriend === correctFriend) {
     score++;
@@ -230,7 +233,7 @@ function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
     score = 0;
     scoreValue.textContent = score;
     displayConversationAroundQuote(chatHistory, quoteIndex);
-    conversationContainer.innerHTML = `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
+    conversationContainer.innerHTML += `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
     newGameBtn.style.display = 'block';
   }
 }
