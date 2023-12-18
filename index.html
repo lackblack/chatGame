@@ -58,7 +58,7 @@
       const randomQuote = chatHistory[randomIndex];
 
       // Display the quote
-      quoteContainer.textContent = randomQuote.message;
+      quoteContainer.innerHTML = `<strong>${randomQuote.message}</strong>`;
 
       // Create an array of friend names
       const friends = chatHistory.map(chat => chat.sender);
@@ -73,30 +73,34 @@
       shuffledFriends.forEach(friend => {
         const optionButton = document.createElement('button');
         optionButton.textContent = friend;
-        optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender));
+        optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory.indexOf(randomQuote)));
         optionsContainer.appendChild(optionButton);
       });
     }
 
     // Function to display the conversation around the selected quote
-    function displayConversationAroundQuote(chatHistory, currentQuoteIndex) {
+    function displayConversationAroundQuote(chatHistory, quoteIndex) {
       const conversationContainer = document.getElementById('conversation');
       conversationContainer.innerHTML = '';
 
-      const messagesToShow = 4;
-      const startIndex = Math.max(0, currentQuoteIndex - messagesToShow);
-      const endIndex = Math.min(chatHistory.length - 1, currentQuoteIndex + messagesToShow);
+      const messagesToShow = 3;
+      const startIndex = Math.max(0, quoteIndex - messagesToShow);
+      const endIndex = Math.min(chatHistory.length - 1, quoteIndex + messagesToShow);
 
       for (let i = startIndex; i <= endIndex; i++) {
         const message = chatHistory[i];
         const messageElement = document.createElement('p');
-        messageElement.innerHTML = `<strong>${message.sender}</strong>: ${message.message}`;
+        if (i === quoteIndex) {
+          messageElement.innerHTML = `<strong>${message.sender}: ${message.message}</strong>`;
+        } else {
+          messageElement.innerHTML = `${message.sender}: ${message.message}`;
+        }
         conversationContainer.appendChild(messageElement);
       }
     }
 
     // Function to check the answer
-    async function checkAnswer(selectedFriend, correctFriend) {
+    async function checkAnswer(selectedFriend, correctFriend, quoteIndex) {
       if (selectedFriend === correctFriend) {
         alert('Correct! You guessed it right!');
         // Increase score or perform any other actions for a correct answer
@@ -108,8 +112,7 @@
       // Display the conversation around the quote
       const chatText = await fetchChatHistory(); // Refetch chat history
       const parsedChatHistory = parseChatData(chatText);
-      const currentQuoteIndex = Math.floor(Math.random() * parsedChatHistory.length);
-      displayConversationAroundQuote(parsedChatHistory, currentQuoteIndex);
+      displayConversationAroundQuote(parsedChatHistory, quoteIndex);
     }
 
     // Load chat history and parse when the page loads
