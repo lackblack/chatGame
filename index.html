@@ -78,10 +78,6 @@
       border-radius: 5px;
       padding: 8px 16px;
       cursor: pointer;
-      border: 1px solid #25d366; /* Added border */
-    }
-    .options-btn:last-child {
-      margin-right: 0; /* Remove right margin for the last button */
     }
     #score {
       margin-top: 20px;
@@ -103,36 +99,12 @@
       border-bottom: 1px solid #ccc; /* Separator line style */
       margin: 20px 0;
     }
-     .guess-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .guess-buttons button {
-      background-color: #25d366;
-      color: #fff;
-      border: 1px solid #25d366;
-      border-radius: 5px;
-      padding: 8px 16px;
-      cursor: pointer;
-      width: calc(50% - 5px); /* Adjusted button width */
-      max-width: 150px;
-    }
-
-      #joonasBtn {
-      margin-right: 5px; /* Add margin between buttons */
-    }
-
-    #immuSalamaBtn {
-      margin-left: 5px; /* Add margin between buttons */
-    }
   </style>
 </head>
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Kuka sen sanoi?</div>
+    <div class="chat-header">Kuka sanoi?</div>
     <div class="chat-body" id="conversation"></div>
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
@@ -141,11 +113,6 @@
     <div class="separator"></div> <!-- Separator line -->
     <div id="correctMessage" class="correct-answer" style="display: none;">Correct! You guessed it right!</div>
     <div id="wrongMessage" class="wrong-answer" style="display: none;">Oops! The correct answer was Immu Salama. Game over!</div>
-   <div class="guess-buttons">
-    <button id="joonasBtn" class="options-btn" onclick="checkAnswer('Joonas')">Joonas</button>
-    <button id="immuSalamaBtn" class="options-btn" onclick="checkAnswer('Immu Salama')">Immu Salama</button>
-  </div>
-    <div class="separator"></div> <!-- Additional separator line -->
     <button id="nextBtn" onclick="nextQuote()">Next</button>
     <button id="newGameBtn" onclick="startNewGame()">New Game</button>
     <p id="score">Score: <span id="scoreValue">0</span></p>
