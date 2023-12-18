@@ -78,6 +78,10 @@
       border-radius: 5px;
       padding: 8px 16px;
       cursor: pointer;
+      border: 1px solid #25d366; /* Added border */
+    }
+    .options-btn:last-child {
+      margin-right: 0; /* Remove right margin for the last button */
     }
     #score {
       margin-top: 20px;
@@ -104,7 +108,7 @@
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Guess Who Said It?v19</div>
+    <div class="chat-header">Kuka sen sanoi?</div>
     <div class="chat-body" id="conversation"></div>
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
