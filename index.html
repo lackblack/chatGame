@@ -18,6 +18,7 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center; /* Center alignment for buttons */
     }
     .chat-header {
       background-color: #075e54;
@@ -64,21 +65,42 @@
     .options-btn {
       margin-right: 10px;
       margin-bottom: 10px;
+      background-color: #25d366; /* WhatsApp-style button color */
+      color: #fff; /* Text color */
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    #score {
+      margin-top: 20px;
+      text-align: center; /* Center alignment for score */
+    }
+    #nextBtn,
+    #newGameBtn {
+      display: none;
+      background-color: #25d366; /* WhatsApp-style button color */
+      color: #fff; /* Text color */
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      cursor: pointer;
+      margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Guess Who Said It?v13</div>
+    <div class="chat-header">Guess Who Said It?v14</div>
     <div class="chat-body" id="conversation"></div>
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
       <div id="options"></div>
     </div>
+    <button id="nextBtn" onclick="nextQuote()">Next</button>
+    <button id="newGameBtn" onclick="startNewGame()">New Game</button>
     <p id="score">Score: <span id="scoreValue">0</span></p>
-    <button id="nextBtn" onclick="nextQuote()" style="display: none;">Next</button>
-    <button id="newGameBtn" onclick="startNewGame()" style="display: none;">New Game</button>
   </div>
 
   <script>
