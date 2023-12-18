@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <h1>Guess Who Said It?v8</h1>
+  <h1>Guess Who Said It?v9</h1>
   <div id="quote-container">
     <p id="quote"></p>
     <div id="options"></div>
@@ -167,22 +167,37 @@ function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
       }
     }
 
-    // Function to start a new game
-    function startNewGame() {
-      score = 0;
-      const scoreValue = document.getElementById('scoreValue');
-      scoreValue.textContent = score;
-      startGame();
-    }
+    // ... (Previous code remains unchanged)
 
-    // Function to start a new quote game
-    function nextQuote() {
-      const nextBtn = document.getElementById('nextBtn');
-      const newGameBtn = document.getElementById('newGameBtn');
-      nextBtn.style.display = 'none';
-      newGameBtn.style.display = 'none';
-      displayQuoteAndOptions(parsedChatHistory);
-    }
+// Function to start a new quote game
+function nextQuote() {
+  const nextBtn = document.getElementById('nextBtn');
+  const newGameBtn = document.getElementById('newGameBtn');
+  const conversationContainer = document.getElementById('conversation');
+
+  nextBtn.style.display = 'none';
+  newGameBtn.style.display = 'none';
+  conversationContainer.innerHTML = ''; // Clear conversation container
+  displayQuoteAndOptions(parsedChatHistory);
+}
+
+// Function to start a new game
+function startNewGame() {
+  const scoreValue = document.getElementById('scoreValue');
+  const conversationContainer = document.getElementById('conversation');
+  const nextBtn = document.getElementById('nextBtn');
+  const newGameBtn = document.getElementById('newGameBtn');
+
+  score = 0;
+  scoreValue.textContent = score;
+  nextBtn.style.display = 'none';
+  newGameBtn.style.display = 'none';
+  conversationContainer.innerHTML = ''; // Clear conversation container
+  startGame();
+}
+
+// ... (Remaining code remains unchanged)
+
 
     // Function to load chat history and parse when the page loads
     async function startGame() {
