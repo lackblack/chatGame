@@ -62,10 +62,12 @@
     .correct-answer {
       color: green;
       font-weight: bold;
+      margin-top: 20px; /* Added margin */
     }
     .wrong-answer {
       color: red;
       font-weight: bold;
+      margin-top: 20px; /* Added margin */
     }
     .options-btn {
       margin-right: 10px;
@@ -102,7 +104,7 @@
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Guess Who Said It?v21</div>
+    <div class="chat-header">Guess Who Said It?v22</div>
     <div class="chat-body" id="conversation"></div>
     <div class="separator"></div> <!-- Separator line -->
     <div class="message" id="quote-container">
@@ -115,7 +117,6 @@
     <button id="newGameBtn" onclick="startNewGame()">New Game</button>
     <p id="score">Score: <span id="scoreValue">0</span></p>
   </div>
-
   <script>
     let score = 0;
     let parsedChatHistory = [];
