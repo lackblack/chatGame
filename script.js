@@ -28,68 +28,48 @@ function parseChatData(chatText) {
   return parsedMessages;
 }
 
-let currentQuoteIndex = -1; // Index of the current quote displayed
-
 // Function to display the quote and options
 function displayQuoteAndOptions(chatHistory) {
   const quoteContainer = document.getElementById('quote');
   const optionsContainer = document.getElementById('options');
 
-  currentQuoteIndex = Math.floor(Math.random() * chatHistory.length);
-  const randomQuote = chatHistory[currentQuoteIndex];
+  // Get a random quote from the chat history
+  const randomIndex = Math.floor(Math.random() * chatHistory.length);
+  const randomQuote = chatHistory[randomIndex];
 
   // Display the quote
   quoteContainer.textContent = randomQuote.message;
 
+  // Create an array of friend names
+  const friends = chatHistory.map(chat => chat.sender);
+  // Remove duplicates from the array
+  const uniqueFriends = [...new Set(friends)];
+
+  // Shuffle friend names for options
+  const shuffledFriends = uniqueFriends.sort(() => Math.random() - 0.5);
+
   // Display options as buttons
   optionsContainer.innerHTML = '';
-  chatHistory.forEach(chat => {
+  shuffledFriends.forEach(friend => {
     const optionButton = document.createElement('button');
-    optionButton.textContent = chat.sender;
-    optionButton.addEventListener('click', () => checkAnswer(chat.sender, randomQuote.sender));
+    optionButton.textContent = friend;
+    optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender));
     optionsContainer.appendChild(optionButton);
   });
 }
 
 // Function to check the answer
 function checkAnswer(selectedFriend, correctFriend) {
-  const quoteContainer = document.getElementById('quote');
-  const optionsContainer = document.getElementById('options');
-  const feedbackContainer = document.getElementById('feedback');
-
-  // Display feedback
-  feedbackContainer.innerHTML = '';
-  const feedback = document.createElement('p');
-  feedback.textContent = selectedFriend === correctFriend ? 'Correct! You guessed it right!' : `Oops! The correct answer was ${correctFriend}.`;
-  feedbackContainer.appendChild(feedback);
-
-  // Show more text before and after the quote
-  const chatHistory = parsedChatHistory;
-  const totalMessages = chatHistory.length;
-  const messagesToShow = 3; // Number of messages to display
-
-  const startIndex = Math.max(0, currentQuoteIndex - messagesToShow);
-  const endIndex = Math.min(totalMessages - 1, currentQuoteIndex + messagesToShow);
-
-  let context = '';
-  for (let i = startIndex; i <= endIndex; i++) {
-    context += `${chatHistory[i].sender}: ${chatHistory[i].message}<br>`;
+  if (selectedFriend === correctFriend) {
+    alert('Correct! You guessed it right!');
+    // Increase score or perform any other actions for a correct answer
+  } else {
+    alert(`Oops! The correct answer was ${correctFriend}. Try again!`);
+    // Handle incorrect guess (optional)
   }
-  feedbackContainer.innerHTML += `<p><strong>Context:</strong><br>${context}</p>`;
 
-  // Display a button for a new game
-  const newGameButton = document.createElement('button');
-  newGameButton.textContent = 'New Game';
-  newGameButton.addEventListener('click', () => {
-    displayQuoteAndOptions(parsedChatHistory);
-    feedbackContainer.innerHTML = '';
-  });
-  feedbackContainer.appendChild(newGameButton);
-
-  // Disable option buttons after answer
-  optionsContainer.querySelectorAll('button').forEach(button => {
-    button.disabled = true;
-  });
+  // Display a new quote and options after the guess
+  displayQuoteAndOptions(parsedChatHistory);
 }
 
 // Load chat history and parse when the page loads
@@ -97,7 +77,8 @@ window.onload = async () => {
   const chatText = await fetchChatHistory();
   if (chatText) {
     const parsedChatHistory = parseChatData(chatText);
-    displayQuoteAndOptions(parsedChatHistory);
+    console.log(parsedChatHistory); // Check if the data is parsed correctly
+    displayQuoteAndOptions(parsedChatHistory); // Start the game with the parsed chat history
   } else {
     console.error('Failed to load chat history.');
   }
