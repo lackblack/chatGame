@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <h1>Guess Who Said It?</h1>
+  <h1>Guess Who Said It?v1</h1>
   <div id="quote-container">
     <p id="quote"></p>
     <div id="options"></div>
@@ -133,6 +133,8 @@
         scoreValue.textContent = score;
         newGameButton.style.display = 'block';
       }
+
+      displayConversationAroundQuote(chatHistory, currentQuoteIndex);
     }
 
     // Function to load a new quote for guessing
