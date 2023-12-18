@@ -20,7 +20,7 @@
     <div id="options"></div>
   </div>
 
-  <div id="conversation"></div>
+  <div id="conversation" style="display: none;"></div>
   <p id="score">Score: <span id="scoreValue">0</span></p>
   <button id="nextButton" style="display: none;">Next</button>
   <button id="newGameButton" style="display: none;">New Game</button>
@@ -92,6 +92,7 @@
       // Hide the 'Next' and 'New Game' buttons
       nextButton.style.display = 'none';
       newGameButton.style.display = 'none';
+      document.getElementById('conversation').style.display = 'none';
     }
 
     // Function to display the conversation around the selected quote
