@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <h1>Guess Who Said It?v6</h1>
+  <h1>Guess Who Said It?v7</h1>
   <div id="quote-container">
     <p id="quote"></p>
     <div id="options"></div>
@@ -134,6 +134,7 @@
       } else {
         score = 0;
         scoreValue.textContent = score;
+        displayConversationAroundQuote(chatHistory, quoteIndex);
         conversationContainer.innerHTML += `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
         newGameBtn.style.display = 'block';
       }
