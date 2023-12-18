@@ -58,6 +58,7 @@
       padding: 10px; /* Updated padding */
       margin: 5px 0;
       display: inline-block;
+      max-width: 80%; /* Adjusted max-width */
     }
     .correct-answer {
       color: green;
@@ -98,7 +99,7 @@
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Guess Who Said It?v15</div>
+    <div class="chat-header">Guess Who Said It?v17</div>
     <div class="chat-body" id="conversation"></div>
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
@@ -178,53 +179,23 @@
       newGameBtn.style.display = 'none';
     }
 
-   // ... (Previous code remains unchanged)
+    // Function to display the conversation around the selected quote
+    function displayConversationAroundQuote(chatHistory, quoteIndex) {
+      const conversationContainer = document.getElementById('conversation');
+      conversationContainer.innerHTML = '';
 
-// Function to display the conversation around the selected quote
-function displayConversationAroundQuote(chatHistory, quoteIndex) {
-  const conversationContainer = document.getElementById('conversation');
-  conversationContainer.innerHTML = '';
+      const messagesToShow = 3;
+      const startIndex = Math.max(0, quoteIndex - messagesToShow);
+      const endIndex = Math.min(chatHistory.length - 1, quoteIndex + messagesToShow);
 
-  const messagesToShow = 3;
-  const startIndex = Math.max(0, quoteIndex - messagesToShow);
-  const endIndex = Math.min(chatHistory.length - 1, quoteIndex + messagesToShow);
-
-  for (let i = startIndex; i <= endIndex; i++) {
-    const message = chatHistory[i];
-    const messageElement = document.createElement('p');
-    if (i === quoteIndex) {
-      messageElement.innerHTML = `<strong>${message.sender}: ${message.message}</strong>`;
-    } else {
-      messageElement.innerHTML = `${message.sender}: ${message.message}`;
+      for (let i = startIndex; i <= endIndex; i++) {
+        const message = chatHistory[i];
+        const messageElement = document.createElement('div');
+        const senderContent = `<strong>${message.sender}: ${message.message}</strong>`;
+        messageElement.innerHTML = `<div class="conversation-bubble">${i === quoteIndex ? senderContent : message.sender ? senderContent : message.message}</div>`;
+        conversationContainer.appendChild(messageElement);
+      }
     }
-    conversationContainer.appendChild(messageElement);
-  }
-}
-
-// Function to check the answer
-function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
-  const scoreValue = document.getElementById('scoreValue');
-  const conversationContainer = document.getElementById('conversation');
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-
-  if (selectedFriend === correctFriend) {
-    score++;
-    scoreValue.textContent = score;
-    displayConversationAroundQuote(chatHistory, quoteIndex);
-    conversationContainer.innerHTML += `<p class="correct-answer">Correct! You guessed it right!</p>`;
-    nextBtn.style.display = 'block';
-  } else {
-    score = 0;
-    scoreValue.textContent = score;
-    displayConversationAroundQuote(chatHistory, quoteIndex);
-    conversationContainer.innerHTML = `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
-    newGameBtn.style.display = 'block';
-  }
-}
-
-// ... (Remaining code remains unchanged)
-
 
     // Function to check the answer
     function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
@@ -237,48 +208,43 @@ function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
         score++;
         scoreValue.textContent = score;
         displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += `<p class="correct-answer">Correct! You guessed it right!</p>`;
+        conversationContainer.innerHTML += `<div class="conversation-bubble correct-answer">Correct! You guessed it right!</div>`;
         nextBtn.style.display = 'block';
       } else {
         score = 0;
         scoreValue.textContent = score;
         displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
+        conversationContainer.innerHTML += `<div class="conversation-bubble wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</div>`;
         newGameBtn.style.display = 'block';
       }
     }
 
-    // ... (Previous code remains unchanged)
+    // Function to start a new quote game
+    function nextQuote() {
+      const nextBtn = document.getElementById('nextBtn');
+      const newGameBtn = document.getElementById('newGameBtn');
+      const conversationContainer = document.getElementById('conversation');
 
-// Function to start a new quote game
-function nextQuote() {
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-  const conversationContainer = document.getElementById('conversation');
+      nextBtn.style.display = 'none';
+      newGameBtn.style.display = 'none';
+      conversationContainer.innerHTML = ''; // Clear conversation container
+      displayQuoteAndOptions(parsedChatHistory);
+    }
 
-  nextBtn.style.display = 'none';
-  newGameBtn.style.display = 'none';
-  conversationContainer.innerHTML = ''; // Clear conversation container
-  displayQuoteAndOptions(parsedChatHistory);
-}
+    // Function to start a new game
+    function startNewGame() {
+      const scoreValue = document.getElementById('scoreValue');
+      const conversationContainer = document.getElementById('conversation');
+      const nextBtn = document.getElementById('nextBtn');
+      const newGameBtn = document.getElementById('newGameBtn');
 
-// Function to start a new game
-function startNewGame() {
-  const scoreValue = document.getElementById('scoreValue');
-  const conversationContainer = document.getElementById('conversation');
-  const nextBtn = document.getElementById('nextBtn');
-  const newGameBtn = document.getElementById('newGameBtn');
-
-  score = 0;
-  scoreValue.textContent = score;
-  nextBtn.style.display = 'none';
-  newGameBtn.style.display = 'none';
-  conversationContainer.innerHTML = ''; // Clear conversation container
-  startGame();
-}
-
-// ... (Remaining code remains unchanged)
-
+      score = 0;
+      scoreValue.textContent = score;
+      nextBtn.style.display = 'none';
+      newGameBtn.style.display = 'none';
+      conversationContainer.innerHTML = ''; // Clear conversation container
+      startGame();
+    }
 
     // Function to load chat history and parse when the page loads
     async function startGame() {
