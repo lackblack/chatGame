@@ -5,29 +5,21 @@
   <title>Chat History Game</title>
   <style>
     /* Your CSS styles can go here */
-    #score {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
   </style>
 </head>
 
 <body>
-  <h1>Guess Who Said It?v2</h1>
+  <h1>Guess Who Said It?v3</h1>
   <div id="quote-container">
     <p id="quote"></p>
     <div id="options"></div>
   </div>
 
-  <div id="conversation" style="display: none;"></div>
+  <div id="conversation"></div>
   <p id="score">Score: <span id="scoreValue">0</span></p>
-  <button id="nextButton" style="display: none;">Next</button>
-  <button id="newGameButton" style="display: none;">New Game</button>
 
   <script>
     let score = 0;
-    let currentQuoteIndex = -1;
 
     // Function to fetch chat history from a text file
     async function fetchChatHistory() {
@@ -63,11 +55,10 @@
     function displayQuoteAndOptions(chatHistory) {
       const quoteContainer = document.getElementById('quote');
       const optionsContainer = document.getElementById('options');
-      const nextButton = document.getElementById('nextButton');
-      const newGameButton = document.getElementById('newGameButton');
 
-      currentQuoteIndex = Math.floor(Math.random() * chatHistory.length);
-      const randomQuote = chatHistory[currentQuoteIndex];
+      // Get a random quote from the chat history
+      const randomIndex = Math.floor(Math.random() * chatHistory.length);
+      const randomQuote = chatHistory[randomIndex];
 
       // Display the quote
       quoteContainer.innerHTML = `<strong>${randomQuote.message}</strong>`;
@@ -85,14 +76,9 @@
       shuffledFriends.forEach(friend => {
         const optionButton = document.createElement('button');
         optionButton.textContent = friend;
-        optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory));
+        optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
         optionsContainer.appendChild(optionButton);
       });
-
-      // Hide the 'Next' and 'New Game' buttons
-      nextButton.style.display = 'none';
-      newGameButton.style.display = 'none';
-      document.getElementById('conversation').style.display = 'none';
     }
 
     // Function to display the conversation around the selected quote
@@ -117,41 +103,20 @@
     }
 
     // Function to check the answer
-    function checkAnswer(selectedFriend, correctFriend, chatHistory) {
-      const nextButton = document.getElementById('nextButton');
-      const newGameButton = document.getElementById('newGameButton');
+    function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
       const scoreValue = document.getElementById('scoreValue');
+      const conversationContainer = document.getElementById('conversation');
 
       if (selectedFriend === correctFriend) {
-        alert('Correct! You guessed it right!');
         score++;
         scoreValue.textContent = score;
-        nextButton.style.display = 'block';
+        displayConversationAroundQuote(chatHistory, quoteIndex);
+        conversationContainer.innerHTML += '<p>Correct! You guessed it right!</p>';
       } else {
-        alert('Game Over! Incorrect guess.');
         score = 0;
         scoreValue.textContent = score;
-        newGameButton.style.display = 'block';
+        conversationContainer.innerHTML += `<p>Oops! The correct answer was ${correctFriend}. Game over!</p>`;
       }
-
-      displayConversationAroundQuote(chatHistory, currentQuoteIndex);
-    }
-
-    // Function to load a new quote for guessing
-    function loadNewQuote(chatHistory) {
-      const scoreValue = document.getElementById('scoreValue');
-      displayQuoteAndOptions(chatHistory);
-      displayConversationAroundQuote(chatHistory, currentQuoteIndex);
-      scoreValue.textContent = score;
-    }
-
-    // Function to start a new game
-    function startNewGame(chatHistory) {
-      const scoreValue = document.getElementById('scoreValue');
-      score = 0;
-      scoreValue.textContent = score;
-      displayQuoteAndOptions(chatHistory);
-      displayConversationAroundQuote(chatHistory, currentQuoteIndex);
     }
 
     // Load chat history and parse when the page loads
@@ -159,11 +124,8 @@
       const chatText = await fetchChatHistory();
       if (chatText) {
         const parsedChatHistory = parseChatData(chatText);
-        displayQuoteAndOptions(parsedChatHistory);
-        displayConversationAroundQuote(parsedChatHistory, currentQuoteIndex);
-
-        document.getElementById('nextButton').addEventListener('click', () => loadNewQuote(parsedChatHistory));
-        document.getElementById('newGameButton').addEventListener('click', () => startNewGame(parsedChatHistory));
+        console.log(parsedChatHistory); // Check if the data is parsed correctly
+        displayQuoteAndOptions(parsedChatHistory); // Start the game with the parsed chat history
       } else {
         console.error('Failed to load chat history.');
       }
