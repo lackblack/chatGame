@@ -47,11 +47,11 @@
       display: inline-block;
     }
     .conversation-bubble {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 8px;
+      background-color: #dcf8c6; /* Updated background color */
+      border-radius: 10px; /* Updated border radius */
+      padding: 10px; /* Updated padding */
       margin: 5px 0;
+      display: inline-block;
     }
     .correct-answer {
       color: green;
@@ -70,7 +70,7 @@
 
 <body>
   <div class="chat-window">
-    <div class="chat-header">Guess Who Said It?v12</div>
+    <div class="chat-header">Guess Who Said It?v13</div>
     <div class="chat-body" id="conversation"></div>
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
@@ -80,6 +80,7 @@
     <button id="nextBtn" onclick="nextQuote()" style="display: none;">Next</button>
     <button id="newGameBtn" onclick="startNewGame()" style="display: none;">New Game</button>
   </div>
+
   <script>
     let score = 0;
     let parsedChatHistory = [];
