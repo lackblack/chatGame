@@ -76,7 +76,7 @@
   color: #fff; /* Text color */
   border: none;
   border-radius: 22px;
-  padding: 87px 16px;
+  padding: 8px 16px;
   cursor: pointer;
   display: inline-block; /* Ensure buttons appear in line */
 }
@@ -176,13 +176,14 @@
       const shuffledFriends = uniqueFriends.sort(() => Math.random() - 0.5);
 
       // Display options as buttons
-      optionsContainer.innerHTML = '';
-      shuffledFriends.forEach(friend => {
-        const optionButton = document.createElement('button');
-        optionButton.textContent = friend;
-        optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
-        optionsContainer.appendChild(optionButton);
-      });
+     optionsContainer.innerHTML = '';
+shuffledFriends.forEach(friend => {
+  const optionButton = document.createElement('button');
+  optionButton.textContent = friend;
+  optionButton.classList.add('options-btn'); // Add the class for WhatsApp-style appearance
+  optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
+  optionsContainer.appendChild(optionButton);
+});
 
       nextBtn.style.display = 'none';
       newGameBtn.style.display = 'none';
