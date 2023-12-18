@@ -214,28 +214,28 @@ function displayConversationAroundQuote(chatHistory, quoteIndex) {
 }
 
 // Function to check the answer
-function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
-      const scoreValue = document.getElementById('scoreValue');
-      const conversationContainer = document.getElementById('conversation');
-      const nextBtn = document.getElementById('nextBtn');
-      const newGameBtn = document.getElementById('newGameBtn');
-      const optionsContainer = document.getElementById('options');
+  function checkAnswer(selectedFriend, correctFriend, chatHistory, quoteIndex) {
+    const scoreValue = document.getElementById('scoreValue');
+    const conversationContainer = document.getElementById('conversation');
+    const nextBtn = document.getElementById('nextBtn');
+    const newGameBtn = document.getElementById('newGameBtn');
+    const optionsContainer = document.getElementById('options');
 
-      if (selectedFriend === correctFriend) {
-        score++;
-        scoreValue.textContent = score;
-        displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML += `<p class="correct-answer">Correct! You guessed it right!</p>`;
-        nextBtn.style.display = 'block';
-      } else {
-        score = 0;
-        scoreValue.textContent = score;
-        displayConversationAroundQuote(chatHistory, quoteIndex);
-        conversationContainer.innerHTML = `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
-        newGameBtn.style.display = 'block';
-      }
-      optionsContainer.style.display = 'none'; // Hide the options container
+    if (selectedFriend === correctFriend) {
+      score++;
+      scoreValue.textContent = score;
+      displayConversationAroundQuote(chatHistory, quoteIndex);
+      conversationContainer.innerHTML += `<p class="correct-answer">Correct! You guessed it right!</p>`;
+      nextBtn.style.display = 'block';
+    } else {
+      score = 0;
+      scoreValue.textContent = score;
+      displayConversationAroundQuote(chatHistory, quoteIndex);
+      conversationContainer.innerHTML = `<p class="wrong-answer">Oops! The correct answer was ${correctFriend}. Game over!</p>`;
+      newGameBtn.style.display = 'block';
     }
+    optionsContainer.style.display = 'none'; // Hide the options container
+  }
 
 // ... (Remaining code remains unchanged)
 
