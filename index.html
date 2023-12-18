@@ -4,20 +4,56 @@
   <meta charset="UTF-8">
   <title>Chat History Game</title>
   <style>
-    /* Your CSS styles can go here */
+    /* Your CSS styles for the chat interface */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #quote-container {
+      margin-bottom: 20px;
+    }
+    #quote {
+      background-color: #dcf8c6;
+      border-radius: 10px;
+      padding: 10px;
+      display: inline-block;
+    }
+    #conversation {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .message {
+      margin: 5px 0;
+    }
+    .user-message {
+      background-color: #dcf8c6;
+      border-radius: 10px;
+      padding: 8px;
+      display: inline-block;
+    }
+    .correct-answer,
+    .wrong-answer {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
     .correct-answer {
       color: green;
-      font-weight: bold;
     }
     .wrong-answer {
       color: red;
-      font-weight: bold;
+    }
+    .options-btn {
+      margin-right: 10px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 
 <body>
-  <h1>Guess Who Said It?v9</h1>
+  <h1>Guess Who Said It?v10</h1>
   <div id="quote-container">
     <p id="quote"></p>
     <div id="options"></div>
@@ -27,6 +63,7 @@
   <p id="score">Score: <span id="scoreValue">0</span></p>
   <button id="nextBtn" onclick="nextQuote()" style="display: none;">Next</button>
   <button id="newGameBtn" onclick="startNewGame()" style="display: none;">New Game</button>
+
 
   <script>
     let score = 0;
