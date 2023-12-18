@@ -154,15 +154,34 @@
     }
 
     // Function to display the quote and options
-    function displayQuoteAndOptions(chatHistory) {
-      const quoteContainer = document.getElementById('quote');
-      optionsContainer.innerHTML = '';
+function displayQuoteAndOptions(chatHistory) {
+  const quoteContainer = document.getElementById('quote');
+  const optionsContainer = document.getElementById('options');
+  const nextBtn = document.getElementById('nextBtn');
+  const newGameBtn = document.getElementById('newGameBtn');
+
+  // Get a random quote from the chat history
+  const randomIndex = Math.floor(Math.random() * chatHistory.length);
+  const randomQuote = chatHistory[randomIndex];
+
+  // Display the quote
+  quoteContainer.innerHTML = `<strong>${randomQuote.message}</strong>`;
+
+  // Create an array of friend names
+  const friends = chatHistory.map(chat => chat.sender);
+  // Remove duplicates from the array
+  const uniqueFriends = [...new Set(friends)];
+
+  // Shuffle friend names for options
+  const shuffledFriends = uniqueFriends.sort(() => Math.random() - 0.5);
+
+  // Display options as buttons
+  optionsContainer.innerHTML = '';
   shuffledFriends.forEach(friend => {
     const optionButton = document.createElement('button');
     optionButton.textContent = friend;
     optionButton.classList.add('options-btn'); // Add the class for WhatsApp-style appearance
-    const clickHandler = () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex);
-    optionButton.addEventListener('click', clickHandler);
+    optionButton.addEventListener('click', () => checkAnswer(friend, randomQuote.sender, chatHistory, randomIndex));
     optionsContainer.appendChild(optionButton);
   });
 
