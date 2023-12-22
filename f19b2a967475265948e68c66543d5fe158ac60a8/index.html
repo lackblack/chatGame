@@ -17,6 +17,11 @@
       align-items: center;
       height: 100vh;
     }
+
+    .options-btn[disabled] {
+  display: none; /* Hide disabled options */
+}
+
     .chat-window {
       width: 80%; /* Adjusted width for responsiveness */
       max-width: 500px;
@@ -49,7 +54,7 @@
     }
     
     .chat-body {
-      max-height: 495px;
+      max-height: 695px;
       max-width: 600px;
       overflow-y: visible;
       padding: 10px;
@@ -72,30 +77,43 @@
       margin-right: 24px;
     }
     .conversation-bubble {
-      background-color: #dcf8c6; /* Updated background color */
-      border-radius: 10px; /* Updated border radius */
-      padding: 10px; /* Updated padding */
-      margin: 5px 0;
-      display: inline-block;
-    }
-    
-    .correct-answer {
-  color: green;
-  font-weight: bold;
-  margin-top: 40px; /* Added more margin */
-  margin-bottom: -8px;
-  opacity: 0;
-  animation: fadeIn 0.5s forwards; /* Adjust the duration as needed */
+  position: relative;
+  max-width: 70%;
+  word-wrap: break-word;
+  background-color: #dcf8c6;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px 0;
+  display: inline-block;
+  overflow: auto;
 }
 
-.wrong-answer {
-  color: red;
-  font-weight: bold;
-  margin-top: 40px; /* Added more margin */
-  margin-bottom: -8px;
-  opacity: 0;
-  animation: fadeIn 0.5s forwards; /* Adjust the duration as needed */
-}
+
+
+
+
+    
+.correct-answer,
+
+.correct-answer {
+    color: green; /* Keep the correct answer text green */
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: -8px;
+    opacity: 0;
+    animation: fadeIn 0.7s forwards;
+    text-align: center; /* Center-align the text */
+  }
+
+  .wrong-answer {
+    color: red; /* Change the wrong answer text to red */
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: -8px;
+    opacity: 0;
+    animation: fadeIn 0.7s forwards;
+    text-align: center; /* Center-align the text */
+  }
 
 @keyframes fadeIn {
   from {
@@ -119,6 +137,29 @@
   display: inline-block;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
+
+/* Adjust the style for the hint button */
+#hintBtn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 80px; /* Adjusted width */
+  background-color: transparent;
+  color: #128c7e; /* WhatsApp-style button color */
+  border: 1px solid #128c7e; /* WhatsApp-style button color */
+  border-radius: 6px; /* Rounded corners */
+  padding: 4px 8px; /* Adjusted padding */
+  font-size: 10px; /* Adjusted font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease; /* Updated transitions */
+}
+
+#hintBtn:hover {
+  background-color: #3d9389a9; /* WhatsApp-style button color on hover */
+  color: #fff; /* Text color on hover */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
 
 .options-btn:hover {
   background-color: #0e715c; /* Darker color on hover */
@@ -159,7 +200,7 @@
   <body>
     <div class="chat-window">
       <div class="chat-header">
-        <div class="group-name">🟢 Kalareissu <span style="opacity: 0.4; font-size: 12px;">2021 - 2023</span> <span class="animate-text" style="float: right; color: #f7f7f7; font-weight:bold ; ">Who Said That ❔ </span></div>
+        <div class="group-name">🟢 Kalareissu <span style="opacity: 0.4; font-size: 12px;">2019 - 2023</span> <span class="animate-text" style="float: right; color: #f7f7f7; font-weight:bold ; ">Who Said That ❔ </span></div>
 
         <style>
           @keyframes fadeInOut {
@@ -187,13 +228,16 @@
     <div class="message" id="quote-container">
       <div class="quote-bubble" id="quote"></div>
       <div id="options"></div>
+      <button id="hintBtn" class="options-btn" onclick="provideHint()">Hint</button>
+
     </div>
     <div class="separator"></div> <!-- Separator line -->
     <div id="correctMessage" class="correct-answer" style="display: none;">Correct! You guessed it right!</div>
     <div id="wrongMessage" class="wrong-answer" style="display: none;">Oops! The correct answer was Immu Salama. Game over!</div>
     <button id="nextBtn" onclick="nextQuote()">Next</button>
     <button id="newGameBtn" onclick="startNewGame()">New Game</button>
-    <p id="score">Score: <span id="scoreValue">0</span></p>
+    <p id="score">Score: <span id="scoreValue">0</span> | Hints available: <span id="hintCount">1</span></p>
+
   </div>
 
   
@@ -202,6 +246,7 @@
     let score = 0;
     let parsedChatHistory = [];
     let guessed = false;
+    
   
 
     // Function to fetch chat history from a text file
@@ -275,9 +320,7 @@ function displayQuoteAndOptions(chatHistory) {
   const quoteContainer = document.getElementById('quote');
 
   // Change the quote bubble background color to its normal color
-  quoteContainer.style.backgroundColor = '#dcf8c6'; // Replace with the original color
-  quoteContainer.style.color = 'black';
-  quoteContainer.style.fontSize = '16px';
+  quoteContainer.style.display = 'inline-block';
   
 
   // Get a random quote from the chat history
@@ -321,33 +364,72 @@ function displayQuoteAndOptions(chatHistory) {
 function displayConversationAroundQuote(chatHistory, quoteIndex) {
   const conversationContainer = document.getElementById('conversation');
   conversationContainer.innerHTML = '';
+  conversationContainer.style.textAlign = 'left'; // Align conversation to the left
 
-  const originalQuoteDate = new Date(chatHistory[quoteIndex].timestamp); // Get the date from the original quote
-
-  const dateElement = document.createElement('div');
-  const dateString = `Said on ${originalQuoteDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-  dateElement.innerHTML = `<em style="color: lightgrey; font-style: italic; font-size: 14px;">${dateString}</em>`;
-  
-  conversationContainer.appendChild(dateElement);
-
-  const messagesToShow = 3;
+  const messagesToShow = 2;
   const startIndex = Math.max(0, quoteIndex - messagesToShow);
   const endIndex = Math.min(chatHistory.length - 1, quoteIndex + messagesToShow);
 
   for (let i = startIndex; i <= endIndex; i++) {
     const message = chatHistory[i];
-    const messageElement = document.createElement('p');
+    const messageContainer = document.createElement('div');
+    const isQuote = i === quoteIndex;
 
-    if (i === quoteIndex) {
-      messageElement.classList.add('quote-bubble', 'conversation-bubble');
-      messageElement.innerHTML = `<strong>${message.sender}</strong>: ${message.message}`;
+    const messageBubble = document.createElement('div');
+    messageBubble.classList.add('conversation-bubble');
+    messageBubble.style.padding = '5px'; // Reduced padding
+    messageBubble.style.marginBottom = '1px'; // Reduced margin bottom
+    messageBubble.style.textAlign = isQuote ? 'center' : 'left'; // Align bubble content
+
+    if (isQuote) {
+      messageBubble.classList.add('quote-bubble');
+      messageBubble.style.margin = 'left'; // Center the green bubble
+      messageBubble.style.display = 'table'; // Display as table for centering
+      messageBubble.style.width = 'fit-content'; // Adjust width to fit content
+      messageContainer.style.textAlign = 'left'; // Align the container for the green bubble
+      messageContainer.style.paddingLeft = '70px'; // Adjust padding
     } else {
-      messageElement.innerHTML = `<strong>${message.sender}</strong>: ${message.message}`;
+      messageBubble.style.backgroundColor = 'white';
+      messageBubble.style.border = '1px solid #ccc';
+      messageBubble.style.borderRadius = '5px'; // Smaller border radius
+      messageContainer.style.paddingLeft = '70px'; // Add left padding for non-quote messages
     }
 
-    conversationContainer.appendChild(messageElement);
+    const senderName = document.createElement('div');
+    senderName.innerHTML = message.sender;
+    senderName.style.fontSize = '15px'; // Reduced sender's name font size
+    senderName.style.color = '#4d4d4d';
+    senderName.style.marginBottom = '3px'; // Reduced margin bottom
+    senderName.style.textAlign = 'left'; // Align sender's name to the left
+    senderName.style.fontWeight = 'bold'; // Making sender names bold
+    messageBubble.appendChild(senderName);
+
+    const messageContent = document.createElement('p');
+    messageContent.innerHTML = message.message;
+    messageContent.style.margin = '0';
+    messageContent.style.wordWrap = 'break-word';
+    messageContent.style.textAlign = 'left'; // Align message content to the left
+    messageBubble.appendChild(messageContent);
+
+    messageContainer.appendChild(messageBubble);
+    conversationContainer.appendChild(messageContainer);
   }
+
+  const originalQuoteDate = new Date(chatHistory[quoteIndex].timestamp);
+  const dateElement = document.createElement('div');
+  const dateString = `Said on ${originalQuoteDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br><br>`;
+dateElement.innerHTML = `<em style="color: lightgrey; font-style: italic; font-size: 14px;">${dateString}</em>`;
+
+  conversationContainer.insertBefore(dateElement, conversationContainer.firstChild);
+
+  const hintButton = document.getElementById('hintBtn');
+  hintButton.style.display = 'none';
 }
+
+
+
+
+
 
 
 
@@ -382,9 +464,8 @@ const quoteContainer = document.getElementById('quote');
 quoteContainer.innerHTML = '';
 
 // Change the quote bubble background color to white
-quoteContainer.style.backgroundColor = 'white';
-quoteContainer.style.color = 'white';
-quoteContainer.style.fontSize = '0';
+quoteContainer.style.display = 'none';
+
 
     // Disable guess buttons after a guess
     const optionsContainer = document.getElementById('options');
@@ -392,6 +473,10 @@ quoteContainer.style.fontSize = '0';
   } else {
     displayConversationAroundQuote(chatHistory, quoteIndex);
   }
+
+  const hintButton = document.getElementById('hintBtn');
+  hintButton.style.display = 'none'; // Hide the hint button after a guess
+
 }
 
     // ... (Previous code remains unchanged)
@@ -401,12 +486,76 @@ function nextQuote() {
   const nextBtn = document.getElementById('nextBtn');
   const newGameBtn = document.getElementById('newGameBtn');
   const conversationContainer = document.getElementById('conversation');
+  const hintButton = document.getElementById('hintBtn');
 
   nextBtn.style.display = 'none';
   newGameBtn.style.display = 'none';
   conversationContainer.innerHTML = ''; // Clear conversation container
   displayQuoteAndOptions(parsedChatHistory);
+
+  if (hintCount === 0 || guessed) {
+    hintButton.style.display = 'none'; // Hide the hint button when no hints are available or when a guess is made
+  } else {
+    hintButton.style.display = 'block'; // Show the hint button if hints are available and no guess is made
+  }
 }
+
+
+
+
+let hintCount = 1; // Set the initial hint count
+
+function provideHint() {
+  const hintButton = document.getElementById('hintBtn');
+
+  if (hintCount > 0 && !guessed) {
+    const randomQuote = parsedChatHistory[Math.floor(Math.random() * parsedChatHistory.length)];
+    const correctFriend = randomQuote.sender;
+
+    const optionsContainer = document.getElementById('options');
+    const optionButtons = optionsContainer.getElementsByTagName('button');
+    const correctOption = Array.from(optionButtons).find(button => button.textContent === correctFriend);
+
+    const incorrectOptions = Array.from(optionButtons).filter(button => button !== correctOption && button.style.display !== 'none');
+    
+    const incorrectOptionsCopy = incorrectOptions.slice(); // Create a copy of incorrect options
+    const index = incorrectOptionsCopy.indexOf(correctOption);
+    if (index !== -1) {
+      incorrectOptionsCopy.splice(index, 1); // Remove the correct option from the copy
+    }
+
+    const optionsToRemoveCount = Math.min(hintCount, incorrectOptionsCopy.length);
+
+    for (let i = 0; i < optionsToRemoveCount; i++) {
+      if (incorrectOptionsCopy[i]) {
+        incorrectOptionsCopy[i].style.display = 'none'; // Hide the option
+        incorrectOptionsCopy[i].disabled = true; // Disable the option
+      }
+    }
+
+    hintCount -= optionsToRemoveCount;
+    document.getElementById('hintCount').textContent = hintCount;
+
+    if (hintCount === 0) {
+      hintButton.style.display = 'none';
+    }
+  }
+
+  hintButton.style.display = hintCount > 0 ? 'block' : 'none';
+}
+
+
+function shuffleArray(array) {
+  const shuffledArray = array.slice(); // Create a copy of the array to shuffle
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+}
+
+
+
 
 // Function to start a new game
 function startNewGame() {
@@ -414,14 +563,24 @@ function startNewGame() {
   const conversationContainer = document.getElementById('conversation');
   const nextBtn = document.getElementById('nextBtn');
   const newGameBtn = document.getElementById('newGameBtn');
+  const hintButton = document.getElementById('hintBtn');
 
   score = 0;
   scoreValue.textContent = score;
   nextBtn.style.display = 'none';
   newGameBtn.style.display = 'none';
-  conversationContainer.innerHTML = ''; // Clear conversation container
+  conversationContainer.innerHTML = '';
+
+  hintCount = 1;
+  document.getElementById('hintCount').textContent = hintCount;
+
+  // Show the hint button when hints are available at the start of a new game
+  hintButton.style.display = hintCount > 0 ? 'block' : 'none';
+
   startGame();
 }
+
+
 
 // ... (Remaining code remains unchanged)
 
