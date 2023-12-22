@@ -12,7 +12,10 @@
       background-color: #ededed;
       margin: 0;
       padding: 0;
-      display: flex;
+      display: flex; flex-wrap: wrap;
+
+
+
       justify-content: center;
       align-items: center;
       height: 100vh;
@@ -200,7 +203,7 @@
   <body>
     <div class="chat-window">
       <div class="chat-header">
-        <div class="group-name">🟢 Kalareissu <span style="opacity: 0.4; font-size: 12px;">2019 - 2023</span> <span class="animate-text" style="float: right; color: #f7f7f7; font-weight:bold ; ">Who Said That ❔ </span></div>
+        <div class="group-name">🟢 Kalareissu <span style="opacity: 0.4; font-size: 12px;">2019 - 2023</span> <span class="animate-text" style="float: right; color: #f7f7f7; font-weight:'' ; ">Who Said That ❔ </span></div>
 
         <style>
           @keyframes fadeInOut {
@@ -387,7 +390,7 @@ function displayConversationAroundQuote(chatHistory, quoteIndex) {
       messageBubble.style.display = 'table'; // Display as table for centering
       messageBubble.style.width = 'fit-content'; // Adjust width to fit content
       messageContainer.style.textAlign = 'left'; // Align the container for the green bubble
-      messageContainer.style.paddingLeft = '70px'; // Adjust padding
+      messageContainer.style.paddingLeft = '90px'; // Adjust padding
     } else {
       messageBubble.style.backgroundColor = 'white';
       messageBubble.style.border = '1px solid #ccc';
